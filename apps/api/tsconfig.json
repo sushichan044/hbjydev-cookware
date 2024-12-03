@@ -1,0 +1,3 @@
+{
+  "extends": "@cookware/tsconfig/base.json"
+}
