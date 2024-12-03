@@ -4,6 +4,8 @@ const envSchema = z.object({
   PORT: z.coerce.number().lte(65535).default(8080),
   HOST: z.string().ip().default('0.0.0.0'),
 
+  CORS_ORIGINS: z.array(z.string()).default(['http://localhost:5173']),
+
   TURSO_CONNECTION_URL: z.string().default('https://turso.dev.hayden.moe'),
   TURSO_AUTH_TOKEN: z.string().or(z.undefined()),
 

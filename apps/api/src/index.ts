@@ -5,8 +5,15 @@ import { newIngester } from "./ingest.js";
 import env from "./config/env.js";
 import { recipeApp } from "./recipes/index.js";
 import { xrpcApp } from "./xrpc/index.js";
+import { cors } from "hono/cors";
 
 const app = new Hono();
+
+app.use(cors({
+  origin: env.CORS_ORIGINS,
+  credentials: true,
+}));
+
 app.route('/recipes', recipeApp);
 app.route('/xrpc', xrpcApp);
 
