@@ -1,0 +1,45 @@
+---
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  libsql:
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    environment:
+      SQLD_NODE: primary
+    ports:
+      - 4001:8080
+    volumes:
+      - libsql:/var/lib/sqld
+
+  api_tunnel:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel --url http://host.docker.internal:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  web_tunnel:
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel --url http://host.docker.internal:5173
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  caddy_data: {}
+  caddy_config: {}
+  libsql: {}

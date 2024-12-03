@@ -2,26 +2,38 @@
   "name": "@cookware/api",
   "type": "module",
   "private": true,
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/index.ts | pino-pretty",
+    "dev": "NODE_OPTIONS=--use-openssl-ca tsx watch --clear-screen=false src/index.ts | pino-pretty",
     "build": "tsup",
-    "start": "node dist/index.cjs",
-    "clean": "rimraf dist"
+    "start": "NODE_OPTIONS=--use-openssl-ca node dist/index.cjs",
+    "clean": "rimraf dist",
+    "db:generate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit generate",
+    "db:migrate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit migrate",
+    "db:studio": "NODE_OPTIONS=--use-openssl-ca drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
+    "@libsql/client": "^0.14.0",
+    "@skyware/jetstream": "^0.2.1",
+    "bufferutil": "^4.0.8",
+    "drizzle-orm": "^0.37.0",
     "hono": "^4.6.12",
     "jose": "^5.9.6",
-    "pino": "^9.5.0"
+    "pino": "^9.5.0",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cookware/lexicons": "workspace:*",
     "@cookware/tsconfig": "workspace:*",
+    "@swc/core": "^1.9.3",
     "@types/node": "^22.10.1",
+    "@types/ws": "^8.5.13",
+    "drizzle-kit": "^0.29.0",
     "pino-pretty": "^13.0.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
@@ -37,6 +49,7 @@
     ],
     "splitting": false,
     "sourcemap": true,
-    "clean": true
+    "clean": true,
+    "format": "esm"
   }
 }

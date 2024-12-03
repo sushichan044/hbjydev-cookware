@@ -8,8 +8,14 @@
     "access": "public"
   },
   "devDependencies": {
+    "@atcute/client": "^2.0.6",
+    "@atcute/lex-cli": "^1.0.3",
     "@cookware/tsconfig": "workspace:*",
     "typescript": "^5.7.2",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@atcute/client": "^2.0.6",
     "zod": "^3.23.8"
   }
 }

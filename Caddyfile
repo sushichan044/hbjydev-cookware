@@ -1,0 +1,50 @@
+{
+	storage file_system /data/
+	debug
+	pki {
+		ca hayden {
+			name "Hayden"
+		}
+	}
+}
+
+api.dev.hayden.moe {
+	tls {
+		issuer internal {
+			ca hayden
+		}
+	}
+
+	reverse_proxy http://host.docker.internal:8080
+}
+
+cookware.dev.hayden.moe {
+	tls {
+		issuer internal {
+			ca hayden
+		}
+	}
+
+	reverse_proxy http://host.docker.internal:5173
+}
+
+acme.dev.hayden.moe {
+	tls {
+		issuer internal {
+			ca hayden
+		}
+	}
+	acme_server {
+		ca hayden
+	}
+}
+
+turso.dev.hayden.moe {
+	tls {
+		issuer internal {
+			ca hayden
+		}
+	}
+
+	reverse_proxy http://libsql:8080
+}
