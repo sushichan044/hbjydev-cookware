@@ -1,0 +1,20 @@
+{
+  "name": "@cookware/api",
+  "type": "module",
+  "private": true,
+  "main": "src/index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "hono": "^4.6.12",
+    "pino": "^9.5.0"
+  },
+  "devDependencies": {
+    "@cookware/lexicons": "workspace:*",
+    "@cookware/tsconfig": "workspace:*",
+    "@types/node": "^22.10.1",
+    "pino-pretty": "^13.0.0",
+    "typescript": "^5.7.2"
+  }
+}

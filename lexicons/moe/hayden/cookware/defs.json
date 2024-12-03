@@ -1,0 +1,39 @@
+{
+  "lexicon": 1,
+  "id": "moe.hayden.cookware.defs",
+  "defs": {
+    "ingredient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 3000,
+          "maxGraphemes": 300,
+          "description": "The name of the ingredient."
+        },
+        "amount": {
+          "type": "integer",
+          "description": "How much of the ingredient is needed."
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 3000,
+          "maxGraphemes": 300,
+          "description": "The unit the ingredient is measured in."
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 5000,
+          "maxGraphemes": 300,
+          "description": "The instruction to provide to the user."
+        }
+      }
+    }
+  }
+}

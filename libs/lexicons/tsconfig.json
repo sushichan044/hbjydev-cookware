@@ -1,0 +1,4 @@
+{
+  "extends": "@cookware/tsconfig/base.json",
+  "include": ["src/**/*"]
+}
