@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { IngredientObject, StepObject } from './defs';
+import { IngredientObject, StepObject } from './defs.js';
 
 export const RecipeCollection = 'moe.hayden.cookware.recipe' as const;
 

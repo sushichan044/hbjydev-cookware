@@ -24,8 +24,8 @@ export const recipeTable = sqliteTable("recipes", {
   rkey: text('rkey').notNull(),
   title: text('title').notNull(),
   description: text('description'),
-  ingredients: text('ingredients', { mode: 'json' }).$type<Ingredient[]>().notNull(),
-  steps: text('steps', { mode: 'json' }).$type<Step[]>().notNull(),
+  ingredients: text('ingredients', { mode: 'json' }).$type<Partial<Ingredient>[]>().notNull(),
+  steps: text('steps', { mode: 'json' }).$type<Partial<Step>[]>().notNull(),
   createdAt: dateIsoText("created_at").notNull(),
   authorDid: did("author_did").notNull(),
 }, t => ({

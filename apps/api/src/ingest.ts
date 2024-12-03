@@ -2,6 +2,11 @@ import { Jetstream } from "@skyware/jetstream";
 import { WebSocket } from "ws";
 import { ingestLogger } from "./logger.js";
 import env from "./config/env.js";
+import { RecipeCollection, RecipeRecord } from "@cookware/lexicons";
+import { db } from "./db/index.js";
+import { recipeTable } from "./db/schema.js";
+import { parseDid } from "./util/did.js";
+import { and, eq } from "drizzle-orm";
 
 export const newIngester = () => {
   const jetstream = new Jetstream({
@@ -11,12 +16,53 @@ export const newIngester = () => {
     cursor: 0,
   });
 
-  jetstream.onCreate("moe.hayden.cookware.recipe", event => {
-    ingestLogger.info(`New post: ${event.commit.record.title} (${event.commit.rkey})`);
-  });
+  jetstream.on("commit", async event => {
+    if (event.commit.operation == 'create' || event.commit.operation == 'update') {
+      const now = new Date();
+      const { record } = event.commit;
 
-  jetstream.onUpdate("moe.hayden.cookware.recipe", event => {
-    ingestLogger.info(`Updated post: ${event.commit.record.title} (${event.commit.rkey})`);
+      if (
+        event.commit.collection == RecipeCollection
+        && record.$type == RecipeCollection
+        && RecipeRecord.safeParse(record).success
+      ) {
+        const res = await db
+          .insert(recipeTable)
+          .values({
+            rkey: event.commit.rkey,
+            title: record.title,
+            description: record.description,
+            ingredients: record.ingredients,
+            steps: record.steps,
+            authorDid: parseDid(event.did)!,
+            createdAt: now,
+          })
+          .onConflictDoUpdate({
+            target: recipeTable.id,
+            set: {
+              title: record.title,
+              description: record.description,
+              ingredients: record.ingredients,
+              steps: record.steps,
+            },
+          })
+          .execute();
+
+        ingestLogger.info({ res }, 'recipe ingested');
+      }
+    } else if (event.commit.operation == 'delete') {
+      const res = await db
+        .delete(recipeTable)
+        .where(
+          and(
+            eq(recipeTable.authorDid, parseDid(event.did)!),
+            eq(recipeTable.rkey, event.commit.rkey),
+          )
+        )
+        .execute();
+
+      ingestLogger.info({ res }, 'recipe deleted');
+    }
   });
 
   jetstream.on('open', () => {

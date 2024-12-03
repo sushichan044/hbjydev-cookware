@@ -5,7 +5,7 @@ const envSchema = z.object({
   HOST: z.string().ip().default('0.0.0.0'),
 
   TURSO_CONNECTION_URL: z.string().default('https://turso.dev.hayden.moe'),
-  TURSO_AUTH_TOKEN: z.string().nullish(),
+  TURSO_AUTH_TOKEN: z.string().or(z.undefined()),
 
   JETSTREAM_ENDPOINT: z
     .string()
