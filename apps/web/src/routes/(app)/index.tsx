@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import type { Recipe } from '@cookware/lexicons';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,21 +11,21 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useXrpc } from '@/hooks/use-xrpc';
 
 export const Route = createFileRoute('/(app)/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { isPending, data } = useQuery({
-    queryKey: ['recipes:all'],
-    queryFn: async () => {
-      const res = await fetch(`https://api.dev.hayden.moe/recipes`);
-      return await res.json() as { recipes: (Recipe & { rkey: string })[] };
-    },
-  });
+  const { rpc } = useXrpc();
 
-  console.log(data);
+  const { isPending, data } = useQuery({
+    queryKey: ['moe.hayden.cookware.getRecipes', { cursor: '' }],
+    queryFn: () => rpc.get('moe.hayden.cookware.getRecipes', {
+      params: { cursor: '' },
+    }),
+  });
 
   return (
     <>
@@ -50,16 +49,20 @@ function RouteComponent() {
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        {data && data.recipes.map(v => (
-          <Card key={v.rkey}>
-            <CardHeader>
-              <CardTitle>{v.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{v.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data && data.data.recipes.map((v, idx) => (
+            <Card key={idx}>
+              <CardHeader>
+                <CardTitle>
+                  <a href={`/recipe/${v.did}/${v.rkey}`}>{v.title}</a>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{v.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </>
   );

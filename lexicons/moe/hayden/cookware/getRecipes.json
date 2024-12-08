@@ -1,0 +1,64 @@
+{
+  "lexicon": 1,
+  "id": "moe.hayden.cookware.getRecipes",
+  "defs": {
+    "main": {
+      "type": "query",
+      "description": "Gets recipes from the index.",
+      "parameters": {
+        "type": "params",
+        "required": ["cursor"],
+        "properties": {
+          "cursor": {
+            "type": "string"
+          },
+          "did": {
+            "type": "string",
+            "format": "at-identifier"
+          }
+        }
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "required": ["recipes"],
+          "properties": {
+            "recipes": {
+              "type": "array",
+              "items": {
+                "type": "ref",
+                "ref": "#result"
+              }
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": [ "rkey", "did", "title", "description", "ingredients", "steps"],
+      "properties": {
+        "rkey": { "type": "string" },
+        "type": { "type": "string" },
+        "did": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "ref",
+            "ref": "moe.hayden.cookware.defs#ingredient"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "ref",
+            "ref": "moe.hayden.cookware.defs#step"
+          }
+        }
+      }
+    }
+  }
+}

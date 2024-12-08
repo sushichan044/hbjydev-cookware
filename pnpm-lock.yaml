@@ -80,6 +80,12 @@ importers:
 
   apps/web:
     dependencies:
+      '@atcute/client':
+        specifier: ^2.0.6
+        version: 2.0.6
+      '@atcute/oauth-browser-client':
+        specifier: ^1.0.7
+        version: 1.0.7
       '@cookware/lexicons':
         specifier: workspace:^
         version: link:../../libs/lexicons
@@ -231,6 +237,9 @@ packages:
   '@atcute/lex-cli@1.0.3':
     resolution: {integrity: sha512-o6nRrYe1Vu2C21ArSjBCaF9deujBmgx/Q3LkOJorZbc/ableFeThcS5jvePMYcW9t18EDSTlttKn13y8uuUDNQ==}
     hasBin: true
+
+  '@atcute/oauth-browser-client@1.0.7':
+    resolution: {integrity: sha512-ikf3FscGZXYU+S0K4n9eDUMg6pS//g/Zr159+bznxO3Wn2JYBohEIxzy29OIEExXD/qAYMq9kfqvo2d0gs4JWQ==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -2500,6 +2509,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@5.0.9:
+    resolution: {integrity: sha512-Aooyr6MXU6HpvvWXKoVoXwKMs/KyVakWwg7xQfv5/S/RIgJMy0Ifa45H9qqYy7pTCszrHzP21Uk4PZq2HpEM8Q==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
@@ -3167,6 +3181,11 @@ snapshots:
       '@externdefs/collider': 0.1.0(@badrap/valita@0.3.16)
       picocolors: 1.1.1
       prettier: 3.4.1
+
+  '@atcute/oauth-browser-client@1.0.7':
+    dependencies:
+      '@atcute/client': 2.0.6
+      nanoid: 5.0.9
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -5111,6 +5130,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.8: {}
+
+  nanoid@5.0.9: {}
 
   natural-compare@1.4.0: {}
 
