@@ -1,7 +1,6 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { rootLogger } from "./logger.js";
-import { newIngester } from "./ingest.js";
 import env from "./config/env.js";
 import { xrpcApp } from "./xrpc/index.js";
 import { cors } from "hono/cors";
@@ -11,8 +10,6 @@ import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
 import { CookwareSession } from "./util/api.js";
 import { serveStatic } from "@hono/node-server/serve-static";
 import * as Sentry from "@sentry/node"
-import { readFileSync } from "fs";
-import path from "path";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -91,7 +88,6 @@ app.use(async (ctx, next) => {
 
 app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
 
-newIngester().start();
 serve({
   fetch: app.fetch,
   hostname: env.HOST,
