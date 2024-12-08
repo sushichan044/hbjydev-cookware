@@ -11,6 +11,8 @@ import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
 import { CookwareSession } from "./util/api.js";
 import { serveStatic } from "@hono/node-server/serve-static";
 import * as Sentry from "@sentry/node"
+import { readFileSync } from "fs";
+import path from "path";
 
 if (env.SENTRY_DSN) {
   Sentry.init({
@@ -88,7 +90,10 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use('/*', serveStatic({ root: './public', index: 'index.html', rewriteRequestPath: (_path) => `/index.html` }));
+app.use('/*', async ctx => {
+  const html = readFileSync(path.join(import.meta.dirname, '..', 'public', 'index.html')).toString();
+  return ctx.html(html);
+});
 
 newIngester().start();
 serve({
