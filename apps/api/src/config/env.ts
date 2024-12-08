@@ -4,7 +4,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().lte(65535).default(8080),
   HOST: z.string().ip().default('0.0.0.0'),
 
-  PUBLIC_DIR: z.string().default('./public'),
+  PUBLIC_DIR: z.string().default('../web/dist'),
 
   CORS_ORIGINS: z.array(z.string()).default(['http://localhost:5173', 'https://cookware.dev.hayden.moe']),
 

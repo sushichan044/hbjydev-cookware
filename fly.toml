@@ -5,24 +5,25 @@ primary_region = "lhr"
   dockerfile = "Dockerfile"
 
 [processes]
-web "cd apps/api && node dist/index.js"
-ingester = "cd apps/ingester && node dist/index.js"
+  web = "bash -c 'cd apps/api && node dist/index.js'"
+  ingester = "bash -c 'cd apps/ingester && node dist/index.js'"
 
 [deploy]
-release_command = "pnpm db:migrate"
+  release_command = "bash -c 'cd libs/database && pnpm db:migrate'"
 
 [[vm]]
-size = "shared-cpu-1x"
-memory = 256
-processes = ["web"]
+  size = "shared-cpu-1x"
+  memory = 256
+  processes = ["web"]
 
 [[vm]]
-size = "shared-cpu-1x"
-memory = 256
-processes = ["ingester"]
+  size = "shared-cpu-1x"
+  memory = 256
+  processes = ["ingester"]
 
 [[services]]
   http_checks = []
+  processes = ["web"]
   internal_port = 8080
     [[services.ports]]
       handlers = ["http"]

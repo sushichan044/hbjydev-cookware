@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "db:generate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit generate",
-    "db:migrate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit migrate",
-    "db:studio": "NODE_OPTIONS=--use-openssl-ca drizzle-kit studio"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
     "@atproto/oauth-client-node": "^0.2.3",
