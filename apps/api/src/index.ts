@@ -26,7 +26,7 @@ const app = new Hono<{
     session_key_rotation: boolean,
   },
 }>();
-app.use('/assets/*', serveStatic({ root: './public' }));
+app.use('/assets/*', serveStatic({ root: env.PUBLIC_DIR }));
 
 const store = new CookieStore({
   sessionCookieName: 'cookware-session',
@@ -91,7 +91,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use('/*', async ctx => {
-  const html = readFileSync(path.join(import.meta.dirname, '..', 'public', 'index.html')).toString();
+  const html = readFileSync(path.join(env.PUBLIC_DIR, 'index.html')).toString();
   return ctx.html(html);
 });
 
