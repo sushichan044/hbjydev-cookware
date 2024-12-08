@@ -7,7 +7,7 @@ FROM base AS build
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run -r build
+RUN cd apps/api && pnpm run -r build
 RUN pnpm deploy --filter=@cookware/api --prod /prod/api
 
 FROM base AS api

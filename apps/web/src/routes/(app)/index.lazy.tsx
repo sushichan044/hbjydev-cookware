@@ -59,7 +59,7 @@ function RouteComponent() {
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           <QueryPlaceholder query={query} cards cardsCount={12}>
             {query.data?.data.recipes.map((v, idx) => (
-              <Link key={idx} href={`/recipes/${v.did}/${v.rkey}`}>
+              <Link key={idx} href={`/recipes/${v.author}/${v.rkey}`}>
                 <Card>
                   <CardHeader>
                     <CardTitle>{v.title}</CardTitle>

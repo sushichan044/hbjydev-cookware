@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { db } from '../db/index.js';
 import { recipeTable } from '../db/schema.js';
 import { and, eq, sql } from 'drizzle-orm';
-import { getDidDoc, parseDid } from '../util/did.js';
+import { getDidDoc, getDidFromHandleOrDid } from '../util/did.js';
 
 export const xrpcApp = new Hono();
 
@@ -18,15 +18,26 @@ xrpcApp.get('/moe.hayden.cookware.getRecipes', async ctx => {
     uri: sql`concat(${recipeTable.authorDid}, "/", ${recipeTable.rkey})`.as('uri'),
   }).from(recipeTable);
 
+  const results = [];
+  const eachRecipe = async (r: typeof recipes[0]) => ({
+    author: await (async () => {
+      const author = await getDidDoc(r.authorDid);
+      return author.alsoKnownAs[0]?.substring(5);
+    })(),
+    rkey: r.rkey,
+    did: r.authorDid,
+    title: r.title,
+    description: r.description,
+    ingredients: r.ingredientsCount,
+    steps: r.stepsCount ,
+  });
+
+  for (const result of recipes) {
+    results.push(await eachRecipe(result));
+  }
+
   return ctx.json({
-    recipes: recipes.map(r => ({
-      rkey: r.rkey,
-      did: r.authorDid,
-      title: r.title,
-      description: r.description,
-      ingredients: r.ingredientsCount,
-      steps: r.stepsCount ,
-    })),
+    recipes: results,
   });
 });
 
@@ -35,8 +46,14 @@ xrpcApp.get('/moe.hayden.cookware.getRecipe', async ctx => {
   if (!did) throw new Error('Invalid DID');
   if (!rkey) throw new Error('Invalid rkey');
 
-  const parsedDid = parseDid(did);
-  if (!parsedDid) throw new Error('Invalid DID');
+  let parsedDid = await getDidFromHandleOrDid(did);
+  if (!parsedDid) {
+    ctx.status(404);
+    return ctx.json({
+      error: 'invalid_did',
+      message: 'No such author was found by that identifier.',
+    });
+  }
 
   const recipe = await db.query.recipeTable.findFirst({
     where: and(

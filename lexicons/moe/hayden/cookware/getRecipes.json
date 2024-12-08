@@ -37,8 +37,9 @@
     },
     "result": {
       "type": "object",
-      "required": [ "rkey", "did", "title", "description", "ingredients", "steps"],
+      "required": [ "author", "rkey", "did", "title", "ingredients", "steps"],
       "properties": {
+        "author": { "type": "string" },
         "rkey": { "type": "string" },
         "type": { "type": "string" },
         "did": { "type": "string" },

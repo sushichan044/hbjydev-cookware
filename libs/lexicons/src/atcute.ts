@@ -74,12 +74,13 @@ declare module "@atcute/client/lexicons" {
     }
     interface Result {
       [Brand.Type]?: "moe.hayden.cookware.getRecipes#result";
-      description: string;
+      author: string;
       did: string;
       ingredients: number;
       rkey: string;
       steps: number;
       title: string;
+      description?: string;
       type?: string;
     }
   }
