@@ -38,6 +38,25 @@ declare module "@atcute/client/lexicons" {
     }
   }
 
+  /** Gets a recipe from the index by author DID and rkey. */
+  namespace MoeHaydenCookwareGetRecipe {
+    interface Params {
+      did: string;
+      rkey: string;
+    }
+    type Input = undefined;
+    interface Output {
+      recipe: Result;
+    }
+    interface Result {
+      [Brand.Type]?: "moe.hayden.cookware.getRecipe#result";
+      ingredients: MoeHaydenCookwareDefs.Ingredient[];
+      steps: MoeHaydenCookwareDefs.Step[];
+      title: string;
+      description?: string;
+    }
+  }
+
   /** Gets recipes from the index. */
   namespace MoeHaydenCookwareGetRecipes {
     interface Params {
@@ -52,9 +71,9 @@ declare module "@atcute/client/lexicons" {
       [Brand.Type]?: "moe.hayden.cookware.getRecipes#result";
       description: string;
       did: string;
-      ingredients: MoeHaydenCookwareDefs.Ingredient[];
+      ingredients: number;
       rkey: string;
-      steps: MoeHaydenCookwareDefs.Step[];
+      steps: number;
       title: string;
       type?: string;
     }
@@ -86,6 +105,10 @@ declare module "@atcute/client/lexicons" {
   }
 
   interface Queries {
+    "moe.hayden.cookware.getRecipe": {
+      params: MoeHaydenCookwareGetRecipe.Params;
+      output: MoeHaydenCookwareGetRecipe.Output;
+    };
     "moe.hayden.cookware.getRecipes": {
       params: MoeHaydenCookwareGetRecipes.Params;
       output: MoeHaydenCookwareGetRecipes.Output;

@@ -8,16 +8,30 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as appIndexImport } from './routes/(app)/index'
+import { Route as appRecipesDidRkeyImport } from './routes/(app)/recipes.$did.$rkey'
+
+// Create Virtual Routes
+
+const appIndexLazyImport = createFileRoute('/(app)/')()
 
 // Create/Update Routes
 
-const appIndexRoute = appIndexImport.update({
-  id: '/(app)/',
-  path: '/',
+const appIndexLazyRoute = appIndexLazyImport
+  .update({
+    id: '/(app)/',
+    path: '/',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() => import('./routes/(app)/index.lazy').then((d) => d.Route))
+
+const appRecipesDidRkeyRoute = appRecipesDidRkeyImport.update({
+  id: '/(app)/recipes/$did/$rkey',
+  path: '/recipes/$did/$rkey',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -29,7 +43,14 @@ declare module '@tanstack/react-router' {
       id: '/(app)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof appIndexImport
+      preLoaderRoute: typeof appIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/(app)/recipes/$did/$rkey': {
+      id: '/(app)/recipes/$did/$rkey'
+      path: '/recipes/$did/$rkey'
+      fullPath: '/recipes/$did/$rkey'
+      preLoaderRoute: typeof appRecipesDidRkeyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -38,33 +59,38 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof appIndexRoute
+  '/': typeof appIndexLazyRoute
+  '/recipes/$did/$rkey': typeof appRecipesDidRkeyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof appIndexRoute
+  '/': typeof appIndexLazyRoute
+  '/recipes/$did/$rkey': typeof appRecipesDidRkeyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/(app)/': typeof appIndexRoute
+  '/(app)/': typeof appIndexLazyRoute
+  '/(app)/recipes/$did/$rkey': typeof appRecipesDidRkeyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/recipes/$did/$rkey'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/(app)/'
+  to: '/' | '/recipes/$did/$rkey'
+  id: '__root__' | '/(app)/' | '/(app)/recipes/$did/$rkey'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  appIndexRoute: typeof appIndexRoute
+  appIndexLazyRoute: typeof appIndexLazyRoute
+  appRecipesDidRkeyRoute: typeof appRecipesDidRkeyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  appIndexRoute: appIndexRoute,
+  appIndexLazyRoute: appIndexLazyRoute,
+  appRecipesDidRkeyRoute: appRecipesDidRkeyRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +103,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/(app)/"
+        "/(app)/",
+        "/(app)/recipes/$did/$rkey"
       ]
     },
     "/(app)/": {
-      "filePath": "(app)/index.tsx"
+      "filePath": "(app)/index.lazy.tsx"
+    },
+    "/(app)/recipes/$did/$rkey": {
+      "filePath": "(app)/recipes.$did.$rkey.tsx"
     }
   }
 }

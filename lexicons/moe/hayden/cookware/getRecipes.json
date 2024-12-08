@@ -44,20 +44,8 @@
         "did": { "type": "string" },
         "title": { "type": "string" },
         "description": { "type": "string" },
-        "ingredients": {
-          "type": "array",
-          "items": {
-            "type": "ref",
-            "ref": "moe.hayden.cookware.defs#ingredient"
-          }
-        },
-        "steps": {
-          "type": "array",
-          "items": {
-            "type": "ref",
-            "ref": "moe.hayden.cookware.defs#step"
-          }
-        }
+        "ingredients": { "type": "integer" },
+        "steps": { "type": "integer" }
       }
     }
   }
