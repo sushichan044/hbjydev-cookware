@@ -9,6 +9,14 @@ import { authApp } from "./auth/index.js";
 import { ZodError } from "zod";
 import { CookieStore, Session, sessionMiddleware } from "hono-sessions";
 import { CookwareSession } from "./util/api.js";
+import { serveStatic } from "@hono/node-server/serve-static";
+import * as Sentry from "@sentry/node"
+
+if (env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: env.SENTRY_DSN,
+  });
+}
 
 const app = new Hono<{
   Variables: {
@@ -16,6 +24,7 @@ const app = new Hono<{
     session_key_rotation: boolean,
   },
 }>();
+app.use('/assets/*', serveStatic({ root: './public' }));
 
 const store = new CookieStore({
   sessionCookieName: 'cookware-session',
@@ -78,6 +87,8 @@ app.use(async (ctx, next) => {
     });
   }
 });
+
+app.use('/*', serveStatic({ root: './public', index: 'index.html' }));
 
 newIngester().start();
 serve({

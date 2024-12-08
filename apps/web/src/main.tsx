@@ -4,10 +4,10 @@ import { routeTree } from './routeTree.gen';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import './index.css'
 import { XrpcContext } from './hooks/use-xrpc';
 import { CredentialManager, XRPC } from '@atcute/client';
 import { SERVER_URL } from './lib/utils';
+import './index.css'
 
 const router = createRouter({ routeTree });
 

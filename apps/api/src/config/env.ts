@@ -20,6 +20,8 @@ const envSchema = z.object({
   SESSION_KEY: z.string().default('bJVS+Dx03A3QWWfW3A5Om5DGx1GKptx+1IGAXzOTpw8='),
   SESSION_TTL: z.number().default(((60 * 60) * 24) * 5), // expire in 5 days
 
+  SENTRY_DSN: z.string().or(z.undefined()),
+
   ENV: z
     .union([
       z.literal('development'),

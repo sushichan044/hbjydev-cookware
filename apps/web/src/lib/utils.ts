@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const SERVER_URL = `convenient-newport-amateur-schedules.trycloudflare.com`;
+export const SERVER_URL = 'cookware.fly.dev';

@@ -22,6 +22,7 @@
     "@atproto/oauth-client-node": "^0.2.3",
     "@hono/node-server": "^1.13.7",
     "@libsql/client": "^0.14.0",
+    "@sentry/node": "^8.42.0",
     "@skyware/jetstream": "^0.2.1",
     "bufferutil": "^4.0.8",
     "drizzle-orm": "^0.37.0",
