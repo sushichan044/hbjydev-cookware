@@ -89,11 +89,8 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use('/*', async ctx => {
-  const html = readFileSync(path.join(env.PUBLIC_DIR, 'index.html')).toString();
-  return ctx.html(html);
-});
 app.use('/assets/*', serveStatic({ root: env.PUBLIC_DIR }));
+app.use('/*', serveStatic({ root: env.PUBLIC_DIR, rewriteRequestPath: () => 'index.html' }));
 
 newIngester().start();
 serve({
