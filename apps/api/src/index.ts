@@ -88,7 +88,7 @@ app.use(async (ctx, next) => {
   }
 });
 
-app.use('/*', serveStatic({ root: './public', index: 'index.html' }));
+app.use('/*', serveStatic({ root: './public', index: 'index.html', rewriteRequestPath: (_path) => `/index.html` }));
 
 newIngester().start();
 serve({

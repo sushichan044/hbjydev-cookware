@@ -5,7 +5,7 @@ import { SessionStore, StateStore } from "./storage.js";
 import { Context } from "hono";
 
 export const getClient = async (ctx: Context) => {
-  let appUrl = 'https://cookware.hayden.moe';
+  let appUrl = 'https://cookware.fly.dev';
   if (env.ENV == 'development') {
     appUrl = `https://${ctx.req.header('Host')}`;
   }
