@@ -145,3 +145,5 @@ dist
 
 # Sentry Config File
 .sentryclirc
+
+.turbo

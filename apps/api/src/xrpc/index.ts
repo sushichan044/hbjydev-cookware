@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
-import { db } from '../db/index.js';
-import { recipeTable } from '../db/schema.js';
+import { db, recipeTable } from '@cookware/database';
 import { and, eq, sql } from 'drizzle-orm';
 import { getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
 

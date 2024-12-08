@@ -3,7 +3,20 @@ primary_region = "lhr"
 
 [build]
   dockerfile = "Dockerfile"
-  build-target = "api"
+
+[processes]
+web "cd apps/api && node dist/index.js"
+ingester = "cd apps/ingester && node dist/index.js"
+
+[[vm]]
+size = "shared-cpu-1x"
+memory = 256
+processes = ["web"]
+
+[[vm]]
+size = "shared-cpu-1x"
+memory = 256
+processes = ["ingester"]
 
 [[services]]
   http_checks = []

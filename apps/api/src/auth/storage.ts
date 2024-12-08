@@ -4,9 +4,8 @@ import type {
   NodeSavedState,
   NodeSavedStateStore,
 } from '@atproto/oauth-client-node'
-import { db } from '../db/index.js'
+import { db, authSessionTable, authStateTable } from '@cookware/database'
 import { eq } from 'drizzle-orm';
-import { authSessionTable, authStateTable } from '../db/schema.js';
 
 export class StateStore implements NodeSavedStateStore {
   constructor() {}

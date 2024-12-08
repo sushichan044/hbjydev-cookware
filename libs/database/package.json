@@ -1,0 +1,27 @@
+{
+  "name": "@cookware/database",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "db:generate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit generate",
+    "db:migrate": "NODE_OPTIONS=--use-openssl-ca drizzle-kit migrate",
+    "db:studio": "NODE_OPTIONS=--use-openssl-ca drizzle-kit studio"
+  },
+  "devDependencies": {
+    "@atproto/oauth-client-node": "^0.2.3",
+    "@cookware/lexicons": "workspace:^",
+    "@cookware/tsconfig": "workspace:*",
+    "@types/node": "^22.10.1",
+    "drizzle-kit": "^0.29.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "drizzle-orm": "^0.37.0",
+    "zod": "^3.23.8"
+  }
+}

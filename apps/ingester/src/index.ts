@@ -1,10 +1,9 @@
 import { Jetstream } from "@skyware/jetstream";
 import { WebSocket } from "ws";
 import { ingestLogger } from "./logger.js";
-import env from "./config/env.js";
+import env from "./config.js";
 import { RecipeCollection, RecipeRecord, parseDid } from "@cookware/lexicons";
-import { db } from "./db/index.js";
-import { recipeTable } from "./db/schema.js";
+import { db, recipeTable } from "@cookware/database";
 import { and, eq } from "drizzle-orm";
 
 export const newIngester = () => {
@@ -81,3 +80,5 @@ export const newIngester = () => {
 
   return jetstream;
 };
+
+newIngester().start();

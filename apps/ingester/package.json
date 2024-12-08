@@ -1,5 +1,5 @@
 {
-  "name": "@cookware/api",
+  "name": "@cookware/ingester",
   "type": "module",
   "private": true,
   "main": "dist/index.js",
@@ -14,19 +14,11 @@
   },
   "dependencies": {
     "@atcute/client": "^2.0.6",
-    "@atproto/api": "^0.13.19",
-    "@atproto/jwk-jose": "^0.1.2",
-    "@atproto/oauth-client-node": "^0.2.3",
     "@cookware/database": "workspace:^",
-    "@hono/node-server": "^1.13.7",
-    "@libsql/client": "^0.14.0",
     "@sentry/node": "^8.42.0",
     "@skyware/jetstream": "^0.2.1",
     "bufferutil": "^4.0.8",
     "drizzle-orm": "^0.37.0",
-    "hono": "^4.6.12",
-    "hono-sessions": "^0.7.0",
-    "jose": "^5.9.6",
     "pino": "^9.5.0",
     "ws": "^8.18.0",
     "zod": "^3.23.8"
@@ -34,10 +26,8 @@
   "devDependencies": {
     "@cookware/lexicons": "workspace:*",
     "@cookware/tsconfig": "workspace:*",
-    "@swc/core": "^1.9.3",
     "@types/node": "^22.10.1",
     "@types/ws": "^8.5.13",
-    "drizzle-kit": "^0.29.0",
     "pino-pretty": "^13.0.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",

@@ -1,8 +1,8 @@
-import env from './src/config/env';
+import env from './src/config';
 import type { Config } from "drizzle-kit";
 
 export default {
-  schema: "./src/db/schema.ts",
+  schema: "./src/schema.ts",
   out: "./migrations",
   dialect: "turso",
   dbCredentials: {

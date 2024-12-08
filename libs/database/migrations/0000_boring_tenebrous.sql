@@ -1,3 +1,13 @@
+CREATE TABLE `auth_session` (
+	`key` text PRIMARY KEY NOT NULL,
+	`session` text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE `auth_state` (
+	`key` text PRIMARY KEY NOT NULL,
+	`state` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `recipes` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`rkey` text NOT NULL,
