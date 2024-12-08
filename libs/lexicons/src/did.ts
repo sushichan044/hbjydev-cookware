@@ -1,5 +1,4 @@
 import { z } from "zod";
-import env from "../config/env.js";
 
 type Brand<K, T> = K & { __brand: T };
 export type DID = Brand<string, "DID">;
@@ -16,7 +15,7 @@ export function parseDid(s: string): DID | null {
 }
 
 export const getDidDoc = async (did: DID) => {
-  let url = `${env.PLC_DIRECTORY_URL}/${did}`;
+  let url = `https://plc.directory/${did}`;
   if (did.startsWith('did:web')) {
     url = `https://${did.split(':')[2]}/.well-known/did.json`;
   }

@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { db } from '../db/index.js';
 import { recipeTable } from '../db/schema.js';
 import { and, eq, sql } from 'drizzle-orm';
-import { getDidDoc, getDidFromHandleOrDid } from '../util/did.js';
+import { getDidDoc, getDidFromHandleOrDid } from '@cookware/lexicons';
 
 export const xrpcApp = new Hono();
 

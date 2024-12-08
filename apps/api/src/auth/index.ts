@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getDidFromHandleOrDid } from "../util/did.js";
+import { getDidFromHandleOrDid } from "@cookware/lexicons";
 import { getClient } from "./client.js";
 import { z } from "zod";
 import { Session } from "hono-sessions";

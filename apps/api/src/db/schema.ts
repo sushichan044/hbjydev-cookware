@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { customType, int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
-import { DID } from "../util/did.js";
+import { DID } from "@cookware/lexicons";
 import { Ingredient, Step } from "@cookware/lexicons";
 import { NodeSavedSession, NodeSavedState } from "@atproto/oauth-client-node";
 
