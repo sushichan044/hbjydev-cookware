@@ -25,19 +25,10 @@ services:
     volumes:
       - libsql:/var/lib/sqld
 
-  api_tunnel:
+  tunnel:
     image: cloudflare/cloudflared
     restart: unless-stopped
-    command: tunnel --url http://host.docker.internal:8080
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
-  web_tunnel:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    command: tunnel --url http://host.docker.internal:5173
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    command: tunnel --url http://caddy
 
 volumes:
   caddy_data: {}

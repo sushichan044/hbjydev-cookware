@@ -45,11 +45,11 @@ function RouteComponent() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{did}</Link></BreadcrumbLink>
+                <BreadcrumbLink asChild><Link href={`/profiles/${did}`}>{query.data ? query.data.data.recipe.author.handle : did}</Link></BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>{rkey}</BreadcrumbPage>
+                <BreadcrumbPage>{query.data ? query.data.data.recipe.title : rkey}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

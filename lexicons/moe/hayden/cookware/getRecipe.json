@@ -34,8 +34,12 @@
     },
     "result": {
       "type": "object",
-      "required": ["title", "ingredients", "steps"],
+      "required": ["author", "title", "ingredients", "steps"],
       "properties": {
+        "author": {
+          "type": "ref",
+          "ref": "#authorInfo"
+        },
         "title": { "type": "string" },
         "description": { "type": "string" },
         "ingredients": {
@@ -52,6 +56,13 @@
             "ref": "moe.hayden.cookware.defs#step"
           }
         }
+      }
+    },
+    "authorInfo": {
+      "type": "object",
+      "required": ["handle"],
+      "properties": {
+        "handle": { "type": "string" }
       }
     }
   }

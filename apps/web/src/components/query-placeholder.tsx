@@ -1,5 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Skeleton } from './ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle } from 'lucide-react';
@@ -9,6 +9,7 @@ type QueryPlaceholderProps<TData, TError> = PropsWithChildren<{
   query: UseQueryResult<TData, TError>;
   cards?: boolean;
   cardsCount?: number;
+  noData?: ReactNode;
 }>;
 
 const QueryPlaceholder = <TData = {}, TError = Error>(
@@ -17,6 +18,7 @@ const QueryPlaceholder = <TData = {}, TError = Error>(
     children,
     cards = false,
     cardsCount = 3,
+    noData = <></>,
   }: QueryPlaceholderProps<TData, TError>
 ) => {
   if (query.isPending || query.isLoading) {
@@ -50,7 +52,7 @@ const QueryPlaceholder = <TData = {}, TError = Error>(
   } else if (query.data) {
     return children;
   }
-  return <></>;
+  return noData;
 };
 
 export default QueryPlaceholder;

@@ -4,7 +4,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().lte(65535).default(8080),
   HOST: z.string().ip().default('0.0.0.0'),
 
-  CORS_ORIGINS: z.array(z.string()).default(['http://localhost:5173']),
+  CORS_ORIGINS: z.array(z.string()).default(['http://localhost:5173', 'https://cookware.dev.hayden.moe']),
 
   TURSO_CONNECTION_URL: z.string().default('https://turso.dev.hayden.moe'),
   TURSO_AUTH_TOKEN: z.string().or(z.undefined()),
@@ -14,6 +14,11 @@ const envSchema = z.object({
     .url()
     .default('wss://jetstream1.us-east.bsky.network/subscribe'),
   PLC_DIRECTORY_URL: z.string().url().default('https://plc.directory'),
+
+  JWKS_PRIVATE_KEY: z.string().default('{"kty":"EC","x":"pew2xWIyBQ4XSY4gcCuTJBI-oC5rQqQlcDxIN8nN834","y":"aiJFNEFWyKKWGiFKPRvLAU4wdhsfgysfTfTuzTC4LNQ","crv":"P-256","d":"QS-q9RzH1u2Oj8gDiUzLk1qpGxZjKSf-3Z1oKCRL_jQ"}'),
+
+  SESSION_KEY: z.string().default('bJVS+Dx03A3QWWfW3A5Om5DGx1GKptx+1IGAXzOTpw8='),
+  SESSION_TTL: z.number().default(((60 * 60) * 24) * 5), // expire in 5 days
 
   ENV: z
     .union([

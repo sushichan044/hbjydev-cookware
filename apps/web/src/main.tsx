@@ -17,7 +17,7 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const creds = new CredentialManager({ service: `https://${SERVER_URL}` });
+const creds = new CredentialManager({ service: `https://${SERVER_URL}/api/` });
 const rpc = new XRPC({ handler: creds });
 const queryClient = new QueryClient();
 

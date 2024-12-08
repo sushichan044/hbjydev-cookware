@@ -26,6 +26,28 @@ cookware.dev.hayden.moe {
 	}
 
 	reverse_proxy http://host.docker.internal:5173
+
+  handle_path /xrpc/* {
+    rewrite * /xrpc{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
+  handle_path /oauth/* {
+    rewrite * /oauth{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
+}
+
+http://*.trycloudflare.com {
+	reverse_proxy http://host.docker.internal:5173
+
+  handle_path /xrpc/* {
+    rewrite * /xrpc{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
+  handle_path /oauth/* {
+    rewrite * /oauth{uri}
+    reverse_proxy http://host.docker.internal:8080
+  }
 }
 
 acme.dev.hayden.moe {

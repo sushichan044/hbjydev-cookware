@@ -13,7 +13,6 @@ import {
   SidebarFooter,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Button } from "./ui/button"
 
 const data = {
   user: {
@@ -76,10 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
-        <Button asChild>
-          <a href="/" className="w-full">Log in</a>
-        </Button>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import { customType, int, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { DID } from "../util/did.js";
 import { Ingredient, Step } from "@cookware/lexicons";
+import { NodeSavedSession, NodeSavedState } from "@atproto/oauth-client-node";
 
 const did = customType<{ data: DID }>({
   dataType() {
@@ -31,3 +32,13 @@ export const recipeTable = sqliteTable("recipes", {
 }, t => ({
   unique_author_rkey: unique().on(t.rkey, t.authorDid),
 }));
+
+export const authStateTable = sqliteTable("auth_state", {
+  key: text().primaryKey(),
+  state: text({ mode: 'json' }).$type<NodeSavedState>().notNull(),
+});
+
+export const authSessionTable = sqliteTable("auth_session", {
+  key: text().primaryKey(),
+  session: text({ mode: 'json' }).$type<NodeSavedSession>().notNull(),
+});

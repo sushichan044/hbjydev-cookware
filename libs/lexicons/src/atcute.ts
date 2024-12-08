@@ -48,8 +48,13 @@ declare module "@atcute/client/lexicons" {
     interface Output {
       recipe: Result;
     }
+    interface AuthorInfo {
+      [Brand.Type]?: "moe.hayden.cookware.getRecipe#authorInfo";
+      handle: string;
+    }
     interface Result {
       [Brand.Type]?: "moe.hayden.cookware.getRecipe#result";
+      author: AuthorInfo;
       ingredients: MoeHaydenCookwareDefs.Ingredient[];
       steps: MoeHaydenCookwareDefs.Step[];
       title: string;

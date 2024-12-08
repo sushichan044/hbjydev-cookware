@@ -16,12 +16,17 @@
     "db:studio": "NODE_OPTIONS=--use-openssl-ca drizzle-kit studio"
   },
   "dependencies": {
+    "@atcute/client": "^2.0.6",
+    "@atproto/api": "^0.13.19",
+    "@atproto/jwk-jose": "^0.1.2",
+    "@atproto/oauth-client-node": "^0.2.3",
     "@hono/node-server": "^1.13.7",
     "@libsql/client": "^0.14.0",
     "@skyware/jetstream": "^0.2.1",
     "bufferutil": "^4.0.8",
     "drizzle-orm": "^0.37.0",
     "hono": "^4.6.12",
+    "hono-sessions": "^0.7.0",
     "jose": "^5.9.6",
     "pino": "^9.5.0",
     "ws": "^8.18.0",

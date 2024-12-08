@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { db } from '../db/index.js';
 import { recipeTable } from '../db/schema.js';
 import { and, eq, sql } from 'drizzle-orm';
-import { parseDid } from '../util/did.js';
+import { getDidDoc, parseDid } from '../util/did.js';
 
 export const xrpcApp = new Hono();
 
@@ -53,8 +53,13 @@ xrpcApp.get('/moe.hayden.cookware.getRecipe', async ctx => {
     });
   }
 
+  const author = await getDidDoc(recipe.authorDid);
+
   return ctx.json({
     recipe: {
+      author: {
+        handle: author.alsoKnownAs[0]?.substring(5),
+      },
       title: recipe.title,
       description: recipe.description,
       ingredients: recipe.ingredients,
