@@ -12,3 +12,11 @@
 
 - Node.js 22.x LTS
 - [pnpm](https://pnpm.io)
+- A [Turso](https://turso.tech) database
+- Maybe Docker?
+
+## Services
+
+- [`api`](./apps/api): Runs the API server and hosts the SPA in production
+- [`ingester`](./apps/ingester): Ingests ATProto records from a Jetstream source independently of the API process.
+- [`web`](./apps/web): React SPA, hosted by the API in production.
