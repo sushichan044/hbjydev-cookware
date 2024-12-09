@@ -1,0 +1,111 @@
+diff --git a/dist/serve-static.mjs b/dist/serve-static.mjs
+index a74fa68f6d92b54a5275712f39e3e53b605c9e2e..c3abcad05762f13ef0b7a652ea8cb2a0ae9539f9 100644
+--- a/dist/serve-static.mjs
++++ b/dist/serve-static.mjs
+@@ -1,12 +1,16 @@
+ // src/serve-static.ts
+-import { getFilePath, getFilePathWithoutDefaultDocument } from "hono/utils/filepath";
++import {
++  getFilePath,
++  getFilePathWithoutDefaultDocument,
++} from "hono/utils/filepath";
+ import { getMimeType } from "hono/utils/mime";
+ import { createReadStream, lstatSync } from "fs";
+-var COMPRESSIBLE_CONTENT_TYPE_REGEX = /^\s*(?:text\/[^;\s]+|application\/(?:javascript|json|xml|xml-dtd|ecmascript|dart|postscript|rtf|tar|toml|vnd\.dart|vnd\.ms-fontobject|vnd\.ms-opentype|wasm|x-httpd-php|x-javascript|x-ns-proxy-autoconfig|x-sh|x-tar|x-virtualbox-hdd|x-virtualbox-ova|x-virtualbox-ovf|x-virtualbox-vbox|x-virtualbox-vdi|x-virtualbox-vhd|x-virtualbox-vmdk|x-www-form-urlencoded)|font\/(?:otf|ttf)|image\/(?:bmp|vnd\.adobe\.photoshop|vnd\.microsoft\.icon|vnd\.ms-dds|x-icon|x-ms-bmp)|message\/rfc822|model\/gltf-binary|x-shader\/x-fragment|x-shader\/x-vertex|[^;\s]+?\+(?:json|text|xml|yaml))(?:[;\s]|$)/i;
++var COMPRESSIBLE_CONTENT_TYPE_REGEX =
++  /^\s*(?:text\/[^;\s]+|application\/(?:javascript|json|xml|xml-dtd|ecmascript|dart|postscript|rtf|tar|toml|vnd\.dart|vnd\.ms-fontobject|vnd\.ms-opentype|wasm|x-httpd-php|x-javascript|x-ns-proxy-autoconfig|x-sh|x-tar|x-virtualbox-hdd|x-virtualbox-ova|x-virtualbox-ovf|x-virtualbox-vbox|x-virtualbox-vdi|x-virtualbox-vhd|x-virtualbox-vmdk|x-www-form-urlencoded)|font\/(?:otf|ttf)|image\/(?:bmp|vnd\.adobe\.photoshop|vnd\.microsoft\.icon|vnd\.ms-dds|x-icon|x-ms-bmp)|message\/rfc822|model\/gltf-binary|x-shader\/x-fragment|x-shader\/x-vertex|[^;\s]+?\+(?:json|text|xml|yaml))(?:[;\s]|$)/i;
+ var ENCODINGS = {
+   br: ".br",
+   zstd: ".zst",
+-  gzip: ".gz"
++  gzip: ".gz",
+ };
+ var ENCODINGS_ORDERED_KEYS = Object.keys(ENCODINGS);
+ var createStreamBody = (stream) => {
+@@ -21,7 +25,7 @@ var createStreamBody = (stream) => {
+     },
+     cancel() {
+       stream.destroy();
+-    }
++    },
+   });
+   return body;
+ };
+@@ -32,8 +36,7 @@ var getStats = (path) => {
+   let stats;
+   try {
+     stats = lstatSync(path);
+-  } catch {
+-  }
++  } catch {}
+   return stats;
+ };
+ var serveStatic = (options = { root: "" }) => {
+@@ -49,8 +52,10 @@ var serveStatic = (options = { root: "" }) => {
+       return next();
+     }
+     let path = getFilePathWithoutDefaultDocument({
+-      filename: options.rewriteRequestPath ? options.rewriteRequestPath(filename) : filename,
+-      root: options.root
++      filename: options.rewriteRequestPath
++        ? options.rewriteRequestPath(filename)
++        : filename,
++      root: options.root,
+     });
+     if (path) {
+       path = addCurrentDirPrefix(path);
+@@ -60,9 +65,11 @@ var serveStatic = (options = { root: "" }) => {
+     let stats = getStats(path);
+     if (stats && stats.isDirectory()) {
+       path = getFilePath({
+-        filename: options.rewriteRequestPath ? options.rewriteRequestPath(filename) : filename,
++        filename: options.rewriteRequestPath
++          ? options.rewriteRequestPath(filename)
++          : filename,
+         root: options.root,
+-        defaultDocument: options.index ?? "index.html"
++        defaultDocument: options.index ?? "index.html",
+       });
+       if (path) {
+         path = addCurrentDirPrefix(path);
+@@ -77,10 +84,18 @@ var serveStatic = (options = { root: "" }) => {
+     }
+     await options.onFound?.(path, c);
+     const mimeType = getMimeType(path);
++    console.info("showing mime type on " + path + " : " + mimeType);
+     c.header("Content-Type", mimeType || "application/octet-stream");
+-    if (options.precompressed && (!mimeType || COMPRESSIBLE_CONTENT_TYPE_REGEX.test(mimeType))) {
++    console.info("Successfully set content type to " + mimeType);
++    if (
++      options.precompressed &&
++      (!mimeType || COMPRESSIBLE_CONTENT_TYPE_REGEX.test(mimeType))
++    ) {
+       const acceptEncodingSet = new Set(
+-        c.req.header("Accept-Encoding")?.split(",").map((encoding) => encoding.trim())
++        c.req
++          .header("Accept-Encoding")
++          ?.split(",")
++          .map((encoding) => encoding.trim())
+       );
+       for (const encoding of ENCODINGS_ORDERED_KEYS) {
+         if (!acceptEncodingSet.has(encoding)) {
+@@ -104,6 +119,7 @@ var serveStatic = (options = { root: "" }) => {
+     }
+     const range = c.req.header("range") || "";
+     if (!range) {
++      console.info("Range header not found. Response with createStreamBody and c.body");
+       c.header("Content-Length", size.toString());
+       return c.body(createStreamBody(createReadStream(path)), 200);
+     }
+@@ -119,9 +135,8 @@ var serveStatic = (options = { root: "" }) => {
+     const stream = createReadStream(path, { start, end });
+     c.header("Content-Length", chunksize.toString());
+     c.header("Content-Range", `bytes ${start}-${end}/${stats.size}`);
++    console.log("Response with createStreamBody and c.body with 206 status code");
+     return c.body(createStreamBody(stream), 206);
+   };
+ };
+-export {
+-  serveStatic
+-};
++export { serveStatic };

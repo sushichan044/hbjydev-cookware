@@ -9,5 +9,11 @@
     "build": "turbo build",
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@hono/node-server": "patches/@hono__node-server.patch",
+      "hono": "patches/hono.patch"
+    }
   }
 }

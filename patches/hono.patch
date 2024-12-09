@@ -1,0 +1,95 @@
+diff --git a/dist/context.js b/dist/context.js
+index edc388cc21dad35ab93b103edb394489e3cfffe8..c19a5cff28539880415b751bbc3135a01cb6e5bc 100644
+--- a/dist/context.js
++++ b/dist/context.js
+@@ -8,6 +8,19 @@ var setHeaders = (headers, map = {}) => {
+   }
+   return headers;
+ };
++
++var jsonifyHeaders = (headers) => {
++  const obj = {};
++  for (const [k, v] of headers.entries()) {
++    if (k === "set-cookie") {
++      obj[k] = headers.getSetCookie();
++    } else {
++      obj[k] = v;
++    }
++  }
++  return obj;
++}
++
+ var Context = class {
+   #rawRequest;
+   #req;
+@@ -153,12 +166,18 @@ var Context = class {
+     return Object.fromEntries(this.#var);
+   }
+   #newResponse(data, arg, headers) {
++    console.info("#newResponse involed");
++    console.dir({ data, arg, headers }),{ depth: null };
+     if (this.#isFresh && !headers && !arg && this.#status === 200) {
++      console.info("return new Response(data, { headers: this.#preparedHeaders })");
++      console.dir({ data, headers: this.#preparedHeaders },{ depth: null });
+       return new Response(data, {
+         headers: this.#preparedHeaders
+       });
+     }
+     if (arg && typeof arg !== "number") {
++      console.info("2nd arg was headers");
++      console.info("arg && typeof arg !== 'number'");
+       const header = new Headers(arg.headers);
+       if (this.#headers) {
+         this.#headers.forEach((v, k) => {
+@@ -170,6 +189,8 @@ var Context = class {
+         });
+       }
+       const headers2 = setHeaders(header, this.#preparedHeaders);
++      console.log("return new Response(data, { headers: headers2, status: arg.status ?? this.#status })");
++      console.dir({ data, headers2, status: arg.status ?? this.#status },{ depth: null });
+       return new Response(data, {
+         headers: headers2,
+         status: arg.status ?? this.#status
+@@ -177,9 +198,17 @@ var Context = class {
+     }
+     const status = typeof arg === "number" ? arg : this.#status;
+     this.#preparedHeaders ??= {};
+-    this.#headers ??= new Headers();
++    this.#headers ??= new Headers()
++    console.info("Merging this.#preparedHeaders into this.#headers");
++    console.dir({ thisHeaders: jsonifyHeaders(this.#headers), thisPreparedHeaders: this.#preparedHeaders },{ depth: null });
+     setHeaders(this.#headers, this.#preparedHeaders);
++    console.info("Merged headers");
++    console.dir({ thisHeaders: jsonifyHeaders(this.#headers) },{ depth: null });
+     if (this.#res) {
++      console.info("this.#res is present");
++      console.info("Merging this.#res headers into this.#headers");
++      console.dir({ thisHeaders: jsonifyHeaders(this.#headers) },{ depth: null });
++      console.dir({ thisResHeaders: jsonifyHeaders(this.#res.headers) },{ depth: null });
+       this.#res.headers.forEach((v, k) => {
+         if (k === "set-cookie") {
+           this.#headers?.append(k, v);
+@@ -187,9 +216,14 @@ var Context = class {
+           this.#headers?.set(k, v);
+         }
+       });
++      console.info("Merged this.#res headers");
++      console.dir({ thisHeaders: jsonifyHeaders(this.#headers) },{ depth: null });
+       setHeaders(this.#headers, this.#preparedHeaders);
++      console.info("Merged this.#preparedHeaders into this.#headers again");
++      console.dir({ thisHeaders: jsonifyHeaders(this.#headers) },{ depth: null });
+     }
+     headers ??= {};
++    console.info("Merging headers from arg and this.#headers");
+     for (const [k, v] of Object.entries(headers)) {
+       if (typeof v === "string") {
+         this.#headers.set(k, v);
+@@ -200,6 +234,8 @@ var Context = class {
+         }
+       }
+     }
++    console.info("Merged arg headers into this.#headers");
++    console.dir({thisHeaders: jsonifyHeaders(this.#headers) },{ depth: null });
+     return new Response(data, {
+       status,
+       headers: this.#headers
