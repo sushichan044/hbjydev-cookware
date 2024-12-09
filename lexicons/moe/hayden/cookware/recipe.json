@@ -22,6 +22,10 @@
             "maxGraphemes": 300,
             "description": "The description of the recipe."
           },
+          "estimate": {
+            "type": "ref",
+            "ref": "moe.hayden.cookware.defs#elapsedTime"
+          },
           "ingredients": {
             "type": "array",
             "items": {

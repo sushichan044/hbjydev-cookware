@@ -34,6 +34,20 @@
           "description": "The instruction to provide to the user."
         }
       }
+    },
+    "elapsedTime": {
+      "type": "object",
+      "required": ["amount", "unit"],
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "description": "The amount of (#unit) to display."
+        },
+        "unit": {
+          "type": "string",
+          "description": "The unit to display the time in."
+        }
+      }
     }
   }
 }

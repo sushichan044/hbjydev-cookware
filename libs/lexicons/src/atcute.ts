@@ -10,6 +10,13 @@ import "@atcute/client/lexicons";
 
 declare module "@atcute/client/lexicons" {
   namespace MoeHaydenCookwareDefs {
+    interface ElapsedTime {
+      [Brand.Type]?: "moe.hayden.cookware.defs#elapsedTime";
+      /** The amount of (#unit) to display. */
+      amount: number;
+      /** The unit to display the time in. */
+      unit: string;
+    }
     interface Ingredient {
       [Brand.Type]?: "moe.hayden.cookware.defs#ingredient";
       /** How much of the ingredient is needed. */
@@ -103,6 +110,7 @@ declare module "@atcute/client/lexicons" {
        * Maximum grapheme length: 300
        */
       description?: string;
+      estimate?: MoeHaydenCookwareDefs.ElapsedTime;
     }
   }
 
